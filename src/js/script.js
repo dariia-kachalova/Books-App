@@ -13,9 +13,15 @@
     bookTemplate: Handlebars.compile(document.querySelector(select.templateOf.bookTemplate).innerHTML),
   };
   const booksList = document.querySelector('.books-list');
+
   function render(){//added new function render
     const thisBook = this;
     for (let eachBook of dataSource.books){
+      eachBook.ratingBgc = thisBook.determineRatingBgc(eachBook.rating);
+      eachBook.ratingWidth = eachBook.rating * 10;
+
+      //eachBookData['ratingBgc'] = ratingBgc;
+      //eachBookData['ratingWidth'] = ratingWidth;
       //generate HTML based on template
       const generatedHTML = templates.bookTemplate(eachBook);
       // generating Dom element
@@ -115,6 +121,21 @@
         bookImage.classList.remove('hidden');
       }
     }
+  }
+  //adding ratings
+  function determineRatingBgc(rating) {
+    let ratingBackground = '';
+
+    if (rating < 6) {
+      ratingBackground = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+    } else if (rating > 6 && rating <= 8) {
+      ratingBackground = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%);';
+    } else if (rating > 8 && rating <= 9) {
+      ratingBackground = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+    } else if (rating > 9) {
+      ratingBackground = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+    }
+    return ratingBackground;
   }
   render();
   initActions();
